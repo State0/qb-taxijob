@@ -1,9 +1,35 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
+local ItemTable = {
+    "water_bottle",
+    "lockpick",
+    "advancedlockpick",
+    "goldchain",
+    "trojan_usb",
+    "crack_baggy",
+    "cokebaggy",
+    "pistol_ammo",
+    "thermite",
+    "nitrous",
+    "walkstick",
+    "gatecrack",
+    "screwdriverset",
+    "xtcbaggy",
+    "smg_ammo",
+    "shotgun_ammo",
+    "tosti",
+    "markedbills",
+    "handcuffs",
+    "joint",
+    "oxy",
+    "weed_zero-haze",
+    "iphone",
+}
+
 function NearTaxi(src)
     local ped = GetPlayerPed(src)
     local coords = GetEntityCoords(ped)
-    for _, v in pairs(Config.NPCLocations.DeliverLocations) do
+    for k,v in pairs(Config.NPCLocations.DeliverLocations) do
         local dist = #(coords - vector3(v.x,v.y,v.z))
         if dist < 20 then
             return true
@@ -22,8 +48,9 @@ RegisterNetEvent('qb-taxi:server:NpcPay', function(Payment)
             Player.Functions.AddMoney('cash', Payment)
             local chance = math.random(1, 100)
             if chance < 26 then
-                Player.Functions.AddItem("cryptostick", 1, false)
-                TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["cryptostick"], "add")
+                local randItem = ItemTable[math.random(1, #ItemTable)]
+                Player.Functions.AddItem(randItem, 1, false)
+                TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[randItem], "add")
             end
         else
             DropPlayer(src, 'Attempting To Exploit')
